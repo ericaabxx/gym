@@ -15,10 +15,17 @@ import {
   import Logo from '@assets/logo.svg'
   import { Input } from '@components/Input'
   import { Button } from '@components/Button'
+
+  type FormDataProps = {
+    name: string;
+    email: string;
+    password: string;
+    password_confirm: string;
+  }
   
   export function SignUp() {
 
-    const { control } = useForm();
+    const { control, handleSubmit } = useForm<FormDataProps>();
 
     const navigation = useNavigation()
 
@@ -26,7 +33,9 @@ import {
       navigation.goBack()
     }
 
-    function handleSignUp(){
+    //any: é qualquer coisa
+    function handleSignUp({ name, email, password, password_confirm }: FormDataProps){
+      console.log( {name, email, password, password_confirm} );
     }
 
     return (
@@ -55,7 +64,6 @@ import {
   
             <Center flex={1} gap="$2">
               <Heading color="$gray100">Crie sua conta</Heading>
-  
 
               <Controller 
               control={control}
@@ -98,12 +106,14 @@ import {
               secureTextEntry
               onChangeText={onChange}
               value={value}
+              onSubmitEditing={handleSubmit(handleSignUp)}
+              returnKeyType="send"
                 /> )}
               />
              
             
               <Button title="Criar e acessar" 
-              onPress={handleSignUp}
+              onPress={handleSubmit(handleSignUp)}
               />
             </Center>
   
